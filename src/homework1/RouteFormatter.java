@@ -80,7 +80,7 @@ public abstract class RouteFormatter {
   		//double a = origHeading - newHeading  ;
 
   		System.out.println("a = " + a);
-  		if(a < 10)
+  		if( -10 < a && a < 10)
   			return "Continue";
   		if(a >= 10 && a < 60)
   			return "Turn slight right";
@@ -91,13 +91,13 @@ public abstract class RouteFormatter {
   		if(a >= 179 )
   			return "U-turn";
   		if(a>= -60 && a < -10)
-  			return "Turn sharp left";
-  		if(a>=241 && a < 301)
-  			return "Turn left";
-  		if(a>=301 && a < 351)
   			return "Turn slight left";
-  		if(a>=351 && a < 361)
-  			return "Continue";
+  		if(a>=-120 && a < -60)
+  			return "Turn left";
+  		if(a>=-179 && a < -120)
+  			return "Turn sharp left";
+  		if(a <= -179)
+  			return "U-turn";
   		return "";
   	}
 
