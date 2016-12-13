@@ -74,7 +74,7 @@ public class Route {
      *          r.start = gs.p1 &&
      *          r.end = gs.p2
      **/
-  	public Route(GeoSegment gs) { // not final
+  	public Route(GeoSegment gs) { 
   		
   		this.geoSegments = new LinkedList<GeoSegment>();
   		this.geoFeatures = new LinkedList<GeoFeature>();
