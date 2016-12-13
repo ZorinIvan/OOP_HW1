@@ -1,8 +1,23 @@
 package homework1;
 
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.JDialog;
 import javax.swing.JList;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.JLabel;
 
 /**
  * A JDailog GUI for choosing a GeoSegemnt and adding it to the route shown
@@ -33,6 +48,77 @@ public class GeoSegmentsDialog extends JDialog {
 		
 		this.parent = pnlParent;
 		
-		// TODO Write the body of this method
+		DefaultListModel model = new DefaultListModel<GeoSegment>();
+		lstSegments = new JList(model);
+		lstSegments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane segmentScroller = new JScrollPane(lstSegments);
+		JLabel segmentLable = new JLabel("Geo Segments:");
+		segmentLable.setLabelFor(lstSegments);
+		JButton addButton = new JButton("Add");
+	    JButton cancelButton = new JButton("cancel");
+	    
+	    model = (DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
+	    for(int i=0; i<ExampleGeoSegments.segments.length; i++){
+	    	model.addElement(ExampleGeoSegments.segments[i]);
+	    }
+	    
+	    addButton.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	          if(lstSegments.getSelectedValue()!=null){
+	  
+	        	  parent.addSegment(lstSegments.getSelectedValue());
+	        
+	        	  
+	          }
+	        }
+	    });
+	    
+	    cancelButton.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	        	setVisible(false);
+	        }
+	    });
+	    
+	   
+	    this.setBounds(20, 20, 20, 20);
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		this.setLayout(gridbag);
+
+		c.fill = GridBagConstraints.BOTH;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.insets = new Insets(0,0,0,0);
+		gridbag.setConstraints(segmentLable, c);
+		this.add(segmentLable);
+		
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 5;
+		c.insets = new Insets(0,0,0,0);
+		gridbag.setConstraints(segmentScroller, c);
+		this.add(segmentScroller);
+		
+		c.gridx = 2;
+		c.gridy = 4;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.insets = new Insets(0,20,0,0);
+		c.anchor = GridBagConstraints.LAST_LINE_START;
+		gridbag.setConstraints(addButton, c);
+		this.add(addButton);
+		
+		c.gridx = 2;
+		c.gridy = 6;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.insets = new Insets(0,0,20,0);
+		c.anchor = GridBagConstraints.LAST_LINE_END;
+		gridbag.setConstraints(cancelButton, c);
+		this.add(cancelButton);
 	}
 }

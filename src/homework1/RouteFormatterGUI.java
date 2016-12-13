@@ -144,8 +144,17 @@ public class RouteFormatterGUI extends JPanel {
 	public void addSegment(GeoSegment segment) {
 		DefaultListModel<GeoSegment> model =
 				(DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
-		
-		// TODO Write the body of this method
+		model.addElement(segment);
+		if(route == null)
+			route = new Route(segment);
+		else if(segment==null || segment.getP1() != route.getEnd())
+				JOptionPane.showMessageDialog(this, "The segment cannot be added.");
+		else
+			route = route.addSegment(segment);
+		WalkingRouteFormatter wr = new WalkingRouteFormatter();
+		txtWalkingDirections.setText(wr.computeDirections(route, 0));
+		DrivingRouteFormatter dr = new DrivingRouteFormatter();
+		txtDrivingDirections.setText(dr.computeDirections(route, route.getStartHeading()));
 	}
 
 
