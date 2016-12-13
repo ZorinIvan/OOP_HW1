@@ -92,7 +92,7 @@ public class Route {
   	}
   	
   	/**
-  	 * Constructs a new Route.
+  	 * Constructs a new Route on base a given route r and adds geoSegment
      * @requires gs != null, r != null
      * @effects Constructs a new Route, r, such that
      *	        r.startHeading = gs.heading &&
@@ -103,13 +103,13 @@ public class Route {
   	private Route(Route r, GeoSegment gs){
   		
   		
-  		this.geoSegments = new LinkedList<GeoSegment>();
-  		this.geoSegments.addAll(r.geoSegments);
+  		this.geoSegments = new LinkedList<GeoSegment>(r.geoSegments);
   		this.geoSegments.add(gs);
   		
  		this.geoFeatures = new LinkedList<GeoFeature>(r.geoFeatures);
-  		if (geoFeatures.getLast().getName().equals(gs.getName())) 
+  		if (geoFeatures.getLast().getName().equals(gs.getName())) //check if there is a such geoFeature in the list.
   		{
+  			//Change last geoFeature in the list with a new one.
   			GeoFeature lastGeoFeature = this.geoFeatures.getLast(); 
   			this.geoFeatures.removeLast();
   			this.geoFeatures.addLast(lastGeoFeature.addSegment(gs));  			
@@ -268,8 +268,6 @@ public class Route {
      * @return a hash code for this.
      **/
   	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// for improved performance.
   		checkRep();
     	return Objects.hash(geoSegments.hashCode(), geoFeatures.hashCode());
   	}
