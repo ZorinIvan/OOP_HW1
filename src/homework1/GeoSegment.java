@@ -44,12 +44,17 @@ import java.util.Objects;
 public class GeoSegment  {
 
 	
-  	// TODO Write abstraction function and representation invariant
+	// Abstract Function:
+	// A straight line segment on the earth of lenght = this.length; start point = this.p1; final point = this.p2
+	
+	// Rep Invariant:
+	// p1 != null, p2 != null, name != null, length >= 0, 0 < heading < 360
 	private void checkRep() {
 		assert this.p1 != null : "p1 != null";
 		assert this.p2 != null : "p2 != null";
 		assert this.name != null : "name != null";
 		assert this.length >= 0 : "length >= 0";
+		assert 0 <= this.heading && this.heading <= 360;
 	}
 	
 	private String name;

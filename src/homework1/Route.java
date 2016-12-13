@@ -46,23 +46,24 @@ public class Route {
 	private final GeoSegment endingGeoSegment;
 
 	
- 	// TODO Write abstraction function and representation invariant
+	// Abstract Function:
+	// A sequence of GeoSegments or GeoFeatures with a final segment = this.endingGeoSegment,
+	// start of the route = this.start,
+	// end of the route = this.end, length of the route = this.length
+	
+	// Rep invariant:
+	// start != null, end != null,  0 < startHeading < 360, 0 < endHeading < 360
+	// length > 0, geoFeatures != null, geoSegments != null.
+	
 	private void checkRep(){
 		assert geoFeatures.size() > 0 && geoSegments.size() > 0 && length > 0 ;
-		int feat_count=0;
-		int seg_count=0;
-		for(GeoFeature it : geoFeatures){
-			if(it.equals(geoFeatures.getLast()))
-				break;
-			assert it.getEnd().equals(geoFeatures.get(feat_count+1).getStart());
-			feat_count++;
-		}
-		for(GeoSegment it : geoSegments){
-			if(it.equals(geoSegments.getLast()))
-				break;
-			assert it.getP2().equals(geoSegments.get(seg_count+1).getP1());
-			seg_count++;
-		}
+		assert start!= null && end != null;
+		assert 0 <= startHeading && startHeading  < 360 && 0 <= endHeading && endHeading <360;
+		assert geoSegments.getLast().equals(endingGeoSegment);
+		Iterator<GeoSegment> it = geoFeatures.getLast().getGeoSegments();
+		while(it.hasNext())
+			it.next();
+		assert it.equals(endingGeoSegment);
 	}
 
   	/**

@@ -71,7 +71,6 @@ public class GeoPoint {
 	// using ints for your internal representation of GeoPoint. 
 
   	
-  	// TODO Write abstraction function and representation invariant
   	// Abstract Function:
   	//	latitude(measured in degrees) = latitude/1000000
   	//	longitude(measured in degrees) = longitude/1000000
