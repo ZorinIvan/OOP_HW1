@@ -86,7 +86,7 @@ public abstract class RouteFormatter {
   			return "Turn slight right";
   		if((a >= 60 && a < 120) || (-300 <= a && a < -240))
   			return "Turn right";
-  		if((a >= 120 && a < 179) && (-240 <= a && a < -181))
+  		if((a >= 120 && a < 179) || (-240 <= a && a < -181))
   			return "Turn sharp right";
   		if(a >= 179 && a < 181 )
   			return "U-turn";

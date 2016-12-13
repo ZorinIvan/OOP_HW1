@@ -60,7 +60,7 @@ public class DrivingRouteFormatter extends RouteFormatter {
   		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 		   		
   		return this.getTurnString(origHeading,geoFeature.getStartHeading())+" onto "+geoFeature.getName()
-  		+" and go "+(Math.round(geoFeature.getLength()*10))/10.0+" kilometers.\n";
+  		+" and go "+ (new DecimalFormat("#.##").format((Math.round(geoFeature.getLength()*10))/10.0)) +" kilometers.\n";
   	}
 
 }
