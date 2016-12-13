@@ -60,6 +60,7 @@ public class WalkingRouteFormatter extends RouteFormatter {
 		// and at:
 		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 					 
-  		// TODO Implement this method
-  	}
+  		return this.getTurnString(origHeading, geoFeature.getStartHeading())+" onto "+
+  		geoFeature.getName()+" and walk for " + Math.round(geoFeature.getLength()*20)+" minutes.\n";
+  		}
 }

@@ -1,6 +1,9 @@
 package homework1;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Objects;
 
 /**
  * A Route is a path that traverses arbitrary GeoSegments, regardless
@@ -33,9 +36,34 @@ import java.util.Iterator;
  **/
 public class Route {
 
+	private final LinkedList<GeoFeature> geoFeatures;
+	private final LinkedList<GeoSegment> geoSegments;
+	private final double length;
+	private final GeoPoint start;
+	private final GeoPoint end;
+	private final double startHeading;
+	private final double endHeading;
+	private final GeoSegment endingGeoSegment;
+
 	
  	// TODO Write abstraction function and representation invariant
-
+	private void checkRep(){
+		assert geoFeatures.size() > 0 && geoSegments.size() > 0 && length > 0 ;
+		int feat_count=0;
+		int seg_count=0;
+		for(GeoFeature it : geoFeatures){
+			if(it.equals(geoFeatures.getLast()))
+				break;
+			assert it.getEnd().equals(geoFeatures.get(feat_count+1).getStart());
+			feat_count++;
+		}
+		for(GeoSegment it : geoSegments){
+			if(it.equals(geoSegments.getLast()))
+				break;
+			assert it.getP2().equals(geoSegments.get(seg_count+1).getP1());
+			seg_count++;
+		}
+	}
 
   	/**
   	 * Constructs a new Route.
@@ -46,8 +74,60 @@ public class Route {
      *          r.start = gs.p1 &&
      *          r.end = gs.p2
      **/
-  	public Route(GeoSegment gs) {
-  		// TODO Implement this constructor
+  	public Route(GeoSegment gs) { // not final
+  		
+  		this.geoSegments = new LinkedList<GeoSegment>();
+  		this.geoFeatures = new LinkedList<GeoFeature>();
+  		this.geoSegments.add(gs);
+  		this.length = gs.getLength();
+  		this.geoFeatures.add(new GeoFeature(gs));
+  		start = gs.getP1();
+  		end = gs.getP2();
+  		startHeading = gs.getHeading();
+  		endHeading = gs.getHeading();
+  		this.endingGeoSegment = new GeoSegment(gs.getName(), gs.getP1(), gs.getP2());
+
+  		checkRep();
+  	}
+  	
+  	/**
+  	 * Constructs a new Route.
+     * @requires gs != null, r != null
+     * @effects Constructs a new Route, r, such that
+     *	        r.startHeading = gs.heading &&
+     *          r.endHeading = gs.heading &&
+     *          r.start = gs.p1 &&
+     *          r.end = gs.p2
+     **/
+  	private Route(Route r, GeoSegment gs){
+  		
+  		
+  		this.geoSegments = new LinkedList<GeoSegment>();
+  		this.geoSegments.addAll(r.geoSegments);
+  		this.geoSegments.add(gs);
+  		
+ 		this.geoFeatures = new LinkedList<GeoFeature>(r.geoFeatures);
+  		if (geoFeatures.getLast().getName().equals(gs.getName())) 
+  		{
+  			GeoFeature lastGeoFeature = this.geoFeatures.getLast(); 
+  			this.geoFeatures.removeLast();
+  			this.geoFeatures.addLast(lastGeoFeature.addSegment(gs));  			
+  		}
+  		else {
+  			//otherwise, create a new feature
+  			this.geoFeatures.addLast(new GeoFeature(gs));
+  			
+  		}
+  		
+  		this.length = r.length + gs.getLength();
+  		start = r.start;
+  		end = gs.getP2();
+  		startHeading = r.startHeading;
+  		endHeading = gs.getHeading();
+  		endingGeoSegment = new GeoSegment(gs.getName(), gs.getP1(), gs.getP2());
+
+  		checkRep();
+  		
   	}
 
 
@@ -56,7 +136,8 @@ public class Route {
      * @return location of the start of the route.
      **/
   	public GeoPoint getStart() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.start;
   	}
 
 
@@ -65,7 +146,8 @@ public class Route {
      * @return location of the end of the route.
      **/
   	public GeoPoint getEnd() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.end;
   	}
 
 
@@ -75,7 +157,8 @@ public class Route {
    	 *         route, in degrees.
    	 **/
   	public double getStartHeading() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.startHeading;
   	}
 
 
@@ -85,7 +168,7 @@ public class Route {
      *         route, in degrees.
      **/
   	public double getEndHeading() {
-  		// TODO Implement this method
+  		return this.endHeading;
   	}
 
 
@@ -96,7 +179,8 @@ public class Route {
      *         traverse the route. These values are not necessarily equal.
    	 **/
   	public double getLength() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.length;
   	}
 
 
@@ -110,7 +194,10 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
   	public Route addSegment(GeoSegment gs) {
-  		// TODO Implement this method
+  		checkRep();
+  		Route r = new Route(this, gs);
+  		return r;
+  		
   	}
 
 
@@ -133,7 +220,8 @@ public class Route {
      * @see homework1.GeoFeature
      **/
   	public Iterator<GeoFeature> getGeoFeatures() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.geoFeatures.iterator();
   	}
 
 
@@ -152,7 +240,8 @@ public class Route {
      * @see homework1.GeoSegment
      **/
   	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.geoSegments.iterator();
   	}
 
 
@@ -163,7 +252,13 @@ public class Route {
      *          the same elements in the same order).
      **/
   	public boolean equals(Object o) {
-  		// TODO Implement this method
+  		checkRep();
+  		if(o != null && o instanceof Route){
+  			checkRep();
+  			return this.geoFeatures.equals(((Route)o).geoFeatures);
+  		}
+  		checkRep();
+  		return false;
   	}
 
 
@@ -174,8 +269,8 @@ public class Route {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it
     	// for improved performance.
-
-    	return 1;
+  		checkRep();
+    	return Objects.hash(geoSegments.hashCode(), geoFeatures.hashCode());
   	}
 
 
@@ -184,6 +279,12 @@ public class Route {
      * @return a string representation of this.
      **/
   	public String toString() {
+  		String str = "";
+		ListIterator<GeoFeature> listIterator = geoFeatures.listIterator();
+  		while(listIterator.hasNext()){
+  			str += " " + listIterator.next().toString();
+  		}
+  		return str;
   	}
 
 }

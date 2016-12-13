@@ -1,6 +1,7 @@
 package homework1;
 
-
+import java.util.Iterator;
+import java.util.LinkedList;
 /**
  * A RouteFormatter class knows how to create a textual description of
  * directions from one location to another. The class is abstract to
@@ -24,7 +25,20 @@ public abstract class RouteFormatter {
 		// feature in this route and concatenate the results into a single
 		// String.
   		
-  		// TODO Implement this method
+  		String dir = "";
+  		double startHeading = heading;
+  		Iterator<GeoFeature> it = route.getGeoFeatures();
+  		GeoFeature gf;
+  		
+  		while(it.hasNext()){
+  			
+  			gf = it.next();
+  			dir+=computeLine(gf, startHeading);
+  			startHeading = gf.getEndHeading();
+  			
+  		}
+  		
+  		return dir;
   	}
 
 
@@ -61,7 +75,30 @@ public abstract class RouteFormatter {
      * and likewise for left turns.
      */
   	protected String getTurnString(double origHeading, double newHeading) {
-  		// TODO Implement this method
+  		
+  		double a = newHeading - origHeading;
+  		//double a = origHeading - newHeading  ;
+
+  		System.out.println("a = " + a);
+  		if(a < 10)
+  			return "Continue";
+  		if(a >= 10 && a < 60)
+  			return "Turn slight right";
+  		if(a >= 60 && a < 120)
+  			return "Turn right";
+  		if(a >= 120 && a < 179)
+  			return "Turn sharp right";
+  		if(a >= 179 )
+  			return "U-turn";
+  		if(a>= -60 && a < -10)
+  			return "Turn sharp left";
+  		if(a>=241 && a < 301)
+  			return "Turn left";
+  		if(a>=301 && a < 351)
+  			return "Turn slight left";
+  		if(a>=351 && a < 361)
+  			return "Continue";
+  		return "";
   	}
 
 }

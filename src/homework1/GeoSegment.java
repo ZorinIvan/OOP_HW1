@@ -1,5 +1,7 @@
 package homework1;
 
+import java.util.Objects;
+
 /**
  * A GeoSegment models a straight line segment on the earth. GeoSegments 
  * are immutable.
@@ -43,15 +45,29 @@ public class GeoSegment  {
 
 	
   	// TODO Write abstraction function and representation invariant
+	private void checkRep() {
+		assert this.p1 != null : "p1 != null";
+		assert this.p2 != null : "p2 != null";
+		assert this.name != null : "name != null";
+		assert this.length >= 0 : "length >= 0";
+	}
 	
-	
+	private String name;
+	private GeoPoint p1, p2;
+	private double length, heading;
+
   	/**
      * Constructs a new GeoSegment with the specified name and endpoints.
      * @requires name != null && p1 != null && p2 != null
      * @effects constructs a new GeoSegment with the specified name and endpoints.
      **/
   	public GeoSegment(String name, GeoPoint p1, GeoPoint p2) {
-  		// TODO Implement this method
+  		this.name = name;
+  		this.p1 = p1;
+  		this.p2 = p2;
+  		length = p1.distanceTo(p2);
+  		heading = p1.headingTo(p2);
+  		checkRep();
   	}
 
 
@@ -61,7 +77,10 @@ public class GeoSegment  {
      *         && gs.p1 = this.p2 && gs.p2 = this.p1
      **/
   	public GeoSegment reverse() {
-  		// TODO Implement this method
+  		checkRep();
+  		GeoSegment segment = new GeoSegment(name, p2, p1);
+  		checkRep();
+  		return segment;
   	}
 
 
@@ -70,7 +89,8 @@ public class GeoSegment  {
      * @return the name of this GeoSegment.
      */
   	public String getName() {
-  		// TODO Implement this method
+  		checkRep();
+  		return name;
   	}
 
 
@@ -79,7 +99,8 @@ public class GeoSegment  {
      * @return first endpoint of the segment.
      */
   	public GeoPoint getP1() {
-  		// TODO Implement this method
+  		checkRep();
+  		return p1;
   	}
 
 
@@ -88,7 +109,8 @@ public class GeoSegment  {
      * @return second endpoint of the segment.
      */
   	public GeoPoint getP2() {
-  		// TODO Implement this method
+  		checkRep();
+  		return p2;
   	}
 
 
@@ -98,7 +120,8 @@ public class GeoSegment  {
      *         Technion approximation.
      */
   	public double getLength() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.length;
   	}
 
 
@@ -109,7 +132,8 @@ public class GeoSegment  {
      *         flat-surface, near the Technion approximation.
      **/
   	public double getHeading() {
-  		// TODO Implement this method
+  		checkRep();
+  		return this.heading;
   	}
 
 
@@ -119,7 +143,9 @@ public class GeoSegment  {
      *         && gs.name = this.name && gs.p1 = this.p1 && gs.p2 = this.p2
    	 **/
   	public boolean equals(Object gs) {
-  		// TODO Implement this method
+  		checkRep();
+  		return gs != null && (gs instanceof GeoSegment) && ((GeoSegment)gs).getName().equals(this.name) 
+  				&& ((GeoSegment)gs).p1.equals(this.p1 )&& ((GeoSegment)gs).p2 .equals(this.p2);
   	}
 
 
@@ -130,8 +156,8 @@ public class GeoSegment  {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it 
     	// for improved performance. 
-
-    	return 1;
+  		checkRep();
+  		return Objects.hash(name, p2.hashCode(), p1.hashCode());
   	}
 
 
@@ -140,7 +166,8 @@ public class GeoSegment  {
      * @return a string representation of this.
      **/
   	public String toString() {
-  		// TODO Implement this method
+  		checkRep();
+  		return "\"" + this.name + ", " + this.p1 + ", " + this.p2 + "\"";
   	}
 
 }

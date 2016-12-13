@@ -103,14 +103,14 @@ public class GeoSegmentTest {
 		show("getP2() works.", gsEast2.getP2().equals(gpZivSquare));
 		
 		show("getLength()");
-		show("East 1 km", same(gsEast.getLength(),1.0));
-		show("West 1 km", same(gsWest.getLength(),1.0));
-		show("North 1 km", same(gsNorth.getLength(),1.0));
+		show("East 1 km", same(gsEast.getLength(),1.0)); 
+		show("West 1 km", same(gsWest.getLength(),1.0)); 
+		show("North 1 km", same(gsNorth.getLength(),1.0)); 
 		show("1.414 km", same(gsDiag.getLength(),1.414));
 		
 		show("getHeading()");
-		show("East should be 90", same(gsEast.getHeading(), 90.0));
-		show("West should be 270", same(gsWest.getHeading(), 270.0));
+		show("East should be 90", same(gsEast.getHeading(), 90.0)); System.out.println(gsEast.getHeading());
+		show("West should be 270", same(gsWest.getHeading(), 270.0)); System.out.println(gsWest.getHeading());
 		double nh = gsNorth.getHeading();
 		show("North heading (" + nh + ") is not less than zero.",
 			!(nh < 0.0));
@@ -119,7 +119,7 @@ public class GeoSegmentTest {
 		show("North heading is expected to be 0 or 359.999", 
 			!((nh > tolerance) && (Math.abs(360.0 - nh)> tolerance )));
 		show("South heading should be 180",
-		 	same(gsNorth.reverse().getHeading(), 180.0));		
+		 	same(gsNorth.reverse().getHeading(), 180.0));		System.out.println(gsNorth.reverse().getHeading());
   	}
 
 
