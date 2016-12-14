@@ -213,9 +213,8 @@ public class GeoFeature {
      **/
   	public GeoFeature addSegment(GeoSegment gs) {
   		checkRep();
-  		
-  		checkRep();
   		GeoFeature gF = new GeoFeature(gs, this);
+  		checkRep();
   		return gF;
   	}
 
